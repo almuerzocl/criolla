@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#FFF3E2;font-family:'Space Grotesk',sans-serif;color:#15110E;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  @keyframes criFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-16px) rotate(4deg)}}
+  @keyframes criFloat2{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(14px) rotate(-5deg)}}
+  @keyframes criMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes criWiggle{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+  @keyframes criPop{0%{transform:scale(.85) rotate(-4deg)}60%{transform:scale(1.05) rotate(2deg)}100%{transform:scale(1) rotate(-2deg)}}
+</style>
+</helmet>
+<div data-screen-label="Cri-Olla" style="--cream:#FFF3E2;--paper:#FFFBF3;--ink:#15110E;--pink:#FF5CA0;--turq:#1FCFCF;--yellow:#FFD12E;--orange:#FF7A33;--green:#34B24A;position:relative;min-height:100vh;">
+
+  <!-- ============ HEADER ============ -->
+  <header style="position:sticky;top:0;z-index:120;background:var(--cream);border-bottom:3px solid var(--ink);">
+    <div style="width:min(1180px,94vw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;">
+      <a href="#top" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;background:var(--ink);padding:8px 14px;border-radius:14px;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--pink);transform:rotate(-3deg);">
+        <span style="font-family:'Pacifico',cursive;font-size:23px;line-height:1;color:#FBE9C8;">Cri-Olla</span>
+        <span style="font-size:17px;">🌿</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+          <div style="display:inline-flex;align-items:center;gap:9px;background:var(--green);border:3px solid var(--ink);border-radius:999px;padding:6px 8px 6px 13px;box-shadow:3px 3px 0 var(--ink);font-weight:800;color:#fff;font-size:14px;">
+            <span style="white-space:nowrap;">✔ Hola, {{ firstName }}</span>
+            <button onClick="{{ logout }}" style="background:var(--ink);color:#fff;border:none;border-radius:999px;padding:4px 10px;font-family:'Space Grotesk';font-weight:700;font-size:12px;cursor:pointer;">salir</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ loginDirect }}" style="background:var(--yellow);border:3px solid var(--ink);border-radius:999px;padding:9px 16px;font-family:'Archivo';font-weight:900;font-size:14px;box-shadow:3px 3px 0 var(--ink);cursor:pointer;" style-active="transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)">Ingresar</button>
+        </sc-if>
+      </div>
+    </div>
+    <div style="border-top:2px dashed var(--ink);background:var(--paper);">
+      <div style="width:min(1180px,94vw);margin:0 auto;display:flex;gap:9px;overflow-x:auto;padding:9px 0;scrollbar-width:none;">
+        <a href="#pedir" style="flex:0 0 auto;text-decoration:none;color:var(--ink);background:var(--pink);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;font-weight:800;font-size:13px;box-shadow:2px 2px 0 var(--ink);">Pedir</a>
+        <a href="#disponibilidad" style="flex:0 0 auto;text-decoration:none;color:var(--ink);background:var(--turq);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;font-weight:800;font-size:13px;box-shadow:2px 2px 0 var(--ink);">Disponibilidad</a>
+        <a href="#menu" style="flex:0 0 auto;text-decoration:none;color:var(--ink);background:var(--yellow);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;font-weight:800;font-size:13px;box-shadow:2px 2px 0 var(--ink);">Menú del día</a>
+        <a href="#novedades" style="flex:0 0 auto;text-decoration:none;color:#fff;background:var(--ink);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;font-weight:800;font-size:13px;box-shadow:2px 2px 0 var(--orange);">Novedades</a>
+        <a href="#acceso" style="flex:0 0 auto;text-decoration:none;color:var(--ink);background:var(--orange);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;font-weight:800;font-size:13px;box-shadow:2px 2px 0 var(--ink);">Acceso</a>
+        <a href="#ubicacion" style="flex:0 0 auto;text-decoration:none;color:var(--ink);background:var(--green);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;font-weight:800;font-size:13px;box-shadow:2px 2px 0 var(--ink);color:#fff;">Cómo llegar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ TICKER ============ -->
+  <sc-if value="{{ showTicker }}" hint-placeholder-val="{{ true }}">
+    <div style="background:var(--ink);overflow:hidden;border-bottom:3px solid var(--ink);">
+      <div style="display:inline-flex;white-space:nowrap;animation:criMarquee 22s linear infinite;font-family:'Anton';font-size:17px;letter-spacing:1.5px;color:var(--yellow);padding:9px 0;">
+        <span>RECIÉN HECHO 🌿 SIN ESPERAR ⏰ LLÉVALO LISTO 🛍️ DESAYUNO · ALMUERZO · SNACK 🍴 PIDE Y LLEGA 🔥 RECIÉN HECHO 🌿 SIN ESPERAR ⏰ LLÉVALO LISTO 🛍️ DESAYUNO · ALMUERZO · SNACK 🍴 PIDE Y LLEGA 🔥 </span>
+        <span>RECIÉN HECHO 🌿 SIN ESPERAR ⏰ LLÉVALO LISTO 🛍️ DESAYUNO · ALMUERZO · SNACK 🍴 PIDE Y LLEGA 🔥 RECIÉN HECHO 🌿 SIN ESPERAR ⏰ LLÉVALO LISTO 🛍️ DESAYUNO · ALMUERZO · SNACK 🍴 PIDE Y LLEGA 🔥 </span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ 1. HERO ============ -->
+  <section id="top" style="position:relative;overflow:hidden;padding:42px 0 30px;scroll-margin-top:120px;">
+    <div style="position:absolute;width:230px;height:210px;background:var(--turq);border-radius:46% 54% 60% 40%/52% 44% 56% 48%;top:-50px;right:-60px;border:3px solid var(--ink);animation:criFloat 8s ease-in-out infinite;"></div>
+    <div style="position:absolute;width:140px;height:130px;background:var(--yellow);border-radius:50% 50% 44% 56%/55% 48% 52% 45%;bottom:-30px;left:-40px;border:3px solid var(--ink);animation:criFloat2 9s ease-in-out infinite;"></div>
+    <div style="position:relative;width:min(1180px,94vw);margin:0 auto;">
+      <div style="display:inline-block;background:var(--ink);color:var(--yellow);font-family:'Archivo';font-weight:900;font-size:13px;letter-spacing:1px;padding:7px 14px;border-radius:999px;transform:rotate(-2deg);">🔥 COCINA CRIOLLA, AL TOQUE</div>
+      <h1 style="font-family:'Anton',sans-serif;font-weight:400;line-height:.9;margin:18px 0 8px;text-transform:uppercase;letter-spacing:.5px;">
+        <span style="display:block;font-size:clamp(2.9rem,13vw,7rem);">¿No alcanzas</span>
+        <span style="display:inline-block;font-size:clamp(2.9rem,13vw,7rem);background:var(--pink);color:#fff;padding:0 .14em;transform:rotate(-1.5deg);box-shadow:6px 6px 0 var(--ink);margin-top:6px;">a cocinar?</span>
+      </h1>
+      <div style="display:inline-block;background:var(--turq);border:3px solid var(--ink);border-radius:10px;box-shadow:5px 5px 0 var(--ink);padding:10px 16px;font-weight:800;font-size:clamp(1rem,4.5vw,1.4rem);transform:rotate(1.5deg);margin:14px 0 4px;">Relájate 😎 la cocina la ponemos nosotros.</div>
+      <p style="max-width:560px;font-size:clamp(1rem,4vw,1.18rem);line-height:1.45;font-weight:500;margin:16px 0 22px;">Tú llegas, nosotros cocinamos. Pide tu almuerzo, desayuno o snack y <strong>llévalo listo de nuestra cocina</strong> — sin sartenes, sin estrés, sin esa duda existencial de las 13:00.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:13px;">
+        <button onClick="{{ startListo }}" style="background:var(--yellow);border:3px solid var(--ink);border-radius:999px;padding:14px 22px;font-family:'Archivo';font-weight:900;font-size:16px;box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px) rotate(-1deg);box-shadow:7px 7px 0 var(--ink)" style-active="transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)">⏰ Pídelo listo al llegar</button>
+        <button onClick="{{ startRecoger }}" style="background:var(--pink);color:#fff;border:3px solid var(--ink);border-radius:999px;padding:14px 22px;font-family:'Archivo';font-weight:900;font-size:16px;box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px) rotate(1deg);box-shadow:7px 7px 0 var(--ink)" style-active="transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)">🛍️ Recoger y llevar</button>
+        <a href="#menu" style="text-decoration:none;color:var(--ink);background:var(--paper);border:3px solid var(--ink);border-radius:999px;padding:14px 22px;font-family:'Archivo';font-weight:900;font-size:16px;box-shadow:5px 5px 0 var(--ink);transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)">👀 Ver el menú</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- scallop separator -->
+  <div style="height:18px;background-image:radial-gradient(circle at 50% 0,var(--pink) 12px,transparent 13px);background-size:30px 30px;background-repeat:repeat-x;"></div>
+
+  <!-- ============ 2,3,4 ACTIONS ============ -->
+  <section id="pedir" style="background:var(--pink);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:46px 0 54px;scroll-margin-top:120px;position:relative;overflow:hidden;">
+    <div style="width:min(1180px,94vw);margin:0 auto;">
+      <h2 style="font-family:'Anton';font-weight:400;text-transform:uppercase;color:#fff;font-size:clamp(2rem,9vw,4rem);line-height:.92;margin:0 0 6px;text-shadow:4px 4px 0 var(--ink);">Tres formas<br>de comer rico</h2>
+      <p style="color:#fff;font-weight:700;font-size:1.05rem;margin:0 0 28px;">Tú eliges el plan. Nosotros tenemos la sartén caliente. 🍳</p>
+
+      <!-- ACTION 2 -->
+      <div style="display:flex;flex-wrap:wrap;align-items:stretch;gap:0;background:var(--turq);border:3px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);overflow:hidden;margin-bottom:26px;transform:rotate(-0.6deg);">
+        <div style="flex:1 1 280px;padding:26px 24px;">
+          <div style="display:inline-block;background:var(--ink);color:var(--turq);font-family:'Archivo';font-weight:900;font-size:12px;letter-spacing:1px;padding:5px 11px;border-radius:999px;">SOLO EN HORARIO DE ALMUERZO</div>
+          <h3 style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(1.7rem,6.5vw,2.7rem);line-height:.95;margin:14px 0 8px;">Pídelo y<br>llega a comer</h3>
+          <p style="font-weight:600;font-size:1rem;margin:0 0 16px;max-width:420px;">Encarga tu almuerzo y déjalo listo para cuando cruces la puerta. Cero fila, cero "¿ya está?". Llegas, te sientas, comes.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            <button onClick="{{ startListo }}" style="background:var(--yellow);border:3px solid var(--ink);border-radius:999px;padding:13px 22px;font-family:'Archivo';font-weight:900;font-size:15px;box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px) rotate(-1deg);box-shadow:7px 7px 0 var(--ink)" style-active="transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)">⏰ Encargar ahora</button>
+            <span style="font-size:12px;font-weight:700;opacity:.8;">🔒 Inicia sesión con Almuerzo.cl</span>
+          </div>
+        </div>
+        <div style="flex:0 0 130px;min-width:120px;background:var(--ink);display:flex;align-items:center;justify-content:center;font-size:64px;">⏰</div>
+      </div>
+
+      <!-- ACTION 3 -->
+      <div style="display:flex;flex-wrap:wrap-reverse;align-items:stretch;gap:0;background:var(--yellow);border:3px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);overflow:hidden;margin-bottom:26px;transform:rotate(0.6deg);">
+        <div style="flex:0 0 130px;min-width:120px;background:var(--ink);display:flex;align-items:center;justify-content:center;font-size:64px;">🛍️</div>
+        <div style="flex:1 1 280px;padding:26px 24px;">
+          <div style="display:inline-block;background:var(--ink);color:var(--yellow);font-family:'Archivo';font-weight:900;font-size:12px;letter-spacing:1px;padding:5px 11px;border-radius:999px;">DESAYUNO · ALMUERZO · SNACK</div>
+          <h3 style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(1.7rem,6.5vw,2.7rem);line-height:.95;margin:14px 0 8px;">Recoger<br>y llevar</h3>
+          <p style="font-weight:600;font-size:1rem;margin:0 0 16px;max-width:420px;">Encarga lo que quieras a la hora que quieras y pásalo a buscar empacado y listo. Para la oficina, la casa o el banco de la plaza.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            <button onClick="{{ startRecoger }}" style="background:var(--pink);color:#fff;border:3px solid var(--ink);border-radius:999px;padding:13px 22px;font-family:'Archivo';font-weight:900;font-size:15px;box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px) rotate(1deg);box-shadow:7px 7px 0 var(--ink)" style-active="transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)">🛍️ Pedir para llevar</button>
+            <span style="font-size:12px;font-weight:700;opacity:.8;">🔒 Inicia sesión con Almuerzo.cl</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTION 4 -->
+      <div style="display:flex;flex-wrap:wrap;align-items:stretch;gap:0;background:var(--paper);border:3px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);overflow:hidden;transform:rotate(-0.5deg);">
+        <div style="flex:1 1 280px;padding:26px 24px;">
+          <div style="display:inline-block;background:var(--green);color:#fff;font-family:'Archivo';font-weight:900;font-size:12px;letter-spacing:1px;padding:5px 11px;border-radius:999px;border:2px solid var(--ink);">MESA EN EL LOCAL 🌿</div>
+          <h3 style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(1.7rem,6.5vw,2.7rem);line-height:.95;margin:14px 0 8px;">Reserva tu<br>mesita</h3>
+          <p style="font-weight:600;font-size:1rem;margin:0 0 16px;max-width:420px;">¿Prefieres comer aquí, con mantel y todo? Aparta tu mesa para desayuno, almuerzo o snack y llega derecho a sentarte.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            <button onClick="{{ startReservar }}" style="background:var(--turq);border:3px solid var(--ink);border-radius:999px;padding:13px 22px;font-family:'Archivo';font-weight:900;font-size:15px;box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px) rotate(-1deg);box-shadow:7px 7px 0 var(--ink)" style-active="transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)">🍽️ Reservar mesa</button>
+            <span style="font-size:12px;font-weight:700;opacity:.8;">🔒 Inicia sesión con Almuerzo.cl</span>
+          </div>
+        </div>
+        <div style="flex:0 0 130px;min-width:120px;background:var(--ink);display:flex;align-items:center;justify-content:center;font-size:64px;">🍽️</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. DISPONIBILIDAD ============ -->
+  <section id="disponibilidad" style="padding:46px 0 50px;scroll-margin-top:120px;position:relative;overflow:hidden;">
+    <div style="position:absolute;width:170px;height:160px;background:var(--orange);border-radius:54% 46% 38% 62%/48% 56% 44% 52%;top:30px;right:-50px;border:3px solid var(--ink);animation:criFloat2 10s ease-in-out infinite;"></div>
+    <div style="width:min(1180px,94vw);margin:0 auto;position:relative;">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+        <h2 style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(2rem,8vw,3.4rem);margin:0;line-height:.95;">Disponibilidad<br>ahora mismo</h2>
+        <span style="display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:#fff;font-weight:800;font-size:12px;padding:6px 12px;border-radius:999px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:criWiggle 1.2s infinite;"></span>EN VIVO</span>
+      </div>
+      <p style="font-weight:600;font-size:1rem;margin:0 0 22px;">Así están las cosas en Los Militares 5934 en este preciso instante. Se actualiza solito. 👀</p>
+      <div style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));">
+        <sc-for list="{{ dispo }}" as="d" hint-placeholder-count="4">
+          <div style="background:var(--paper);border:3px solid var(--ink);border-radius:18px;box-shadow:6px 6px 0 var(--ink);padding:18px;">
+            <div style="font-family:'Archivo';font-weight:900;font-size:17px;line-height:1.1;">{{ d.label }}</div>
+            <div style="{{ d.badgeStyle }}"><span style="width:9px;height:9px;border-radius:50%;background:#fff;"></span>{{ d.status }}</div>
+            <div style="margin-top:11px;font-size:13px;font-weight:600;opacity:.7;">{{ d.note }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. MENU DEL DIA ============ -->
+  <section id="menu" style="background:var(--ink);color:var(--cream);border-top:3px solid var(--ink);padding:48px 0 56px;scroll-margin-top:120px;position:relative;overflow:hidden;">
+    <div style="width:min(1180px,94vw);margin:0 auto;position:relative;">
+      <div style="display:inline-block;background:var(--orange);color:var(--ink);font-family:'Archivo';font-weight:900;font-size:13px;letter-spacing:1px;padding:6px 13px;border-radius:999px;transform:rotate(-2deg);border:2px solid var(--cream);">HOY ES {{ currentDayNameUpper }} 📅</div>
+      <h2 style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(2.2rem,9vw,4rem);margin:16px 0 6px;line-height:.92;color:#fff;">El menú<br><span style="color:var(--yellow);">del día</span></h2>
+      <p style="font-weight:600;font-size:1rem;margin:0 0 22px;opacity:.85;max-width:480px;">Cambia todos los días — porque cocinar lo mismo siempre es de gente sin imaginación. Elige tu momento:</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+        <button onClick="{{ onTabD }}" style="{{ tabDStyle }}">🥐 Desayuno</button>
+        <button onClick="{{ onTabA }}" style="{{ tabAStyle }}">🍽️ Almuerzo</button>
+        <button onClick="{{ onTabS }}" style="{{ tabSStyle }}">🥪 Snack</button>
+      </div>
+      <div style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));">
+        <sc-for list="{{ menuItems }}" as="m" hint-placeholder-count="3">
+          <div style="background:var(--cream);color:var(--ink);border:3px solid var(--cream);border-radius:16px;box-shadow:6px 6px 0 var(--pink);padding:18px;display:flex;justify-content:space-between;align-items:flex-start;gap:14px;">
+            <div>
+              <div style="font-family:'Archivo';font-weight:900;font-size:18px;line-height:1.05;">{{ m.name }}</div>
+              <div style="font-size:13px;font-weight:500;opacity:.7;margin-top:4px;">{{ m.desc }}</div>
+            </div>
+            <div style="font-family:'Anton';font-size:19px;white-space:nowrap;">{{ m.price }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. NOVEDADES ============ -->
+  <section id="novedades" style="padding:48px 0 54px;scroll-margin-top:120px;position:relative;overflow:hidden;background:var(--cream);">
+    <div style="width:min(1180px,94vw);margin:0 auto;position:relative;">
+      <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:8px;">
+        <h2 style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(2.2rem,9vw,4rem);margin:0;line-height:.9;">Novedades<br>de la cocina</h2>
+        <div style="display:inline-block;background:var(--green);color:#fff;border:3px solid var(--ink);border-radius:8px;box-shadow:4px 4px 0 var(--ink);padding:8px 14px;font-weight:800;font-size:13px;transform:rotate(4deg);animation:criWiggle 4s ease-in-out infinite;">¡pégalo en el refri! 📌</div>
+      </div>
+      <p style="font-weight:600;font-size:1rem;margin:0 0 28px;">Promos, platos nuevos y avisos. Lo que se cuece, te lo contamos primero.</p>
+      <div style="display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));padding-top:6px;">
+        <sc-for list="{{ novedades }}" as="n" hint-placeholder-count="4">
+          <div style="{{ n.cardStyle }}">
+            <span style="display:inline-block;background:var(--ink);color:#fff;font-family:'Archivo';font-weight:900;font-size:11px;letter-spacing:1px;padding:4px 10px;border-radius:999px;">{{ n.tag }}</span>
+            <div style="font-family:'Archivo';font-weight:900;font-size:21px;line-height:1.05;margin:12px 0 8px;">{{ n.title }}</div>
+            <div style="font-size:14px;font-weight:500;line-height:1.4;">{{ n.text }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 8. ACCESO CLIENTES ============ -->
+  <section id="acceso" style="background:var(--turq);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:48px 0 52px;scroll-margin-top:120px;position:relative;overflow:hidden;">
+    <div style="position:absolute;width:160px;height:150px;background:var(--pink);border-radius:50% 50% 40% 60%/55% 45% 55% 45%;bottom:-40px;right:30px;border:3px solid var(--ink);animation:criFloat 9s ease-in-out infinite;"></div>
+    <div style="width:min(1180px,94vw);margin:0 auto;position:relative;display:flex;flex-wrap:wrap;gap:30px;align-items:center;">
+      <div style="flex:1 1 300px;">
+        <h2 style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(2rem,8vw,3.6rem);margin:0 0 10px;line-height:.92;">Acceso<br>clientes</h2>
+        <p style="font-weight:600;font-size:1.05rem;max-width:430px;margin:0;">Para pedir, reservar o ver tu disponibilidad personalizada necesitamos saber quién eres. Usamos <strong>Almuerzo.cl</strong> — un clic y adentro. Sin formularios eternos ni contraseñas que nadie recuerda.</p>
+      </div>
+      <div style="flex:1 1 300px;max-width:430px;">
+        <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+          <div style="background:var(--paper);border:3px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);padding:24px;transform:rotate(-1deg);">
+            <div style="font-family:'Archivo';font-weight:900;font-size:18px;margin-bottom:4px;">Ingresa con Almuerzo.cl</div>
+            <div style="font-size:13px;opacity:.7;margin-bottom:16px;">SSO seguro · sin escribir email ni clave</div>
+            <button onClick="{{ loginDirect }}" style="width:100%;background:var(--green);color:#fff;border:3px solid var(--ink);border-radius:14px;padding:15px;font-family:'Archivo';font-weight:900;font-size:17px;box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)" style-active="transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)">🔑 Ingresar con mis credenciales</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+          <div style="background:var(--green);color:#fff;border:3px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--ink);padding:24px;transform:rotate(1deg);animation:criPop .4s ease-out;">
+            <div style="font-size:34px;">✔</div>
+            <div style="font-family:'Archivo';font-weight:900;font-size:20px;margin:6px 0 2px;">¡Sesión activa!</div>
+            <div style="font-weight:600;font-size:15px;">Hola de nuevo, <strong>{{ sessionName }}</strong>. Ya puedes pedir y reservar sin trabas.</div>
+            <button onClick="{{ logout }}" style="margin-top:16px;background:var(--ink);color:#fff;border:none;border-radius:999px;padding:9px 18px;font-family:'Space Grotesk';font-weight:700;font-size:13px;cursor:pointer;">Cerrar sesión</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 11 + 10 PARTNERS ============ -->
+  <section style="padding:48px 0 50px;scroll-margin-top:120px;background:var(--cream);">
+    <div style="width:min(1180px,94vw);margin:0 auto;display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
+      <!-- Almuerzo.cl -->
+      <div style="background:var(--ink);color:var(--cream);border:3px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--pink);padding:26px;">
+        <div style="display:inline-flex;align-items:center;gap:9px;background:var(--cream);color:var(--ink);padding:8px 14px;border-radius:12px;font-weight:900;font-family:'Archivo';font-size:18px;"><span style="background:var(--orange);width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;">🍴</span>Almuerzo<span style="color:var(--orange);">.cl</span></div>
+        <h3 style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(1.5rem,5vw,2.2rem);margin:16px 0 8px;color:#fff;">¿Qué es Almuerzo.cl?</h3>
+        <p style="font-weight:500;font-size:14px;line-height:1.5;opacity:.85;margin:0 0 18px;">Es la plataforma con la que inicias sesión y se gestionan todos tus pedidos y reservas en Cri-Olla. Una sola cuenta, todos tus antojos ordenaditos.</p>
+        <a href="https://almuerzo.cl" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;background:var(--orange);color:var(--ink);border:3px solid var(--cream);border-radius:999px;padding:11px 20px;font-family:'Archivo';font-weight:900;font-size:14px;box-shadow:4px 4px 0 var(--pink);">Visitar almuerzo.cl ↗</a>
+      </div>
+      <!-- Google Business -->
+      <div style="background:var(--paper);border:3px solid var(--ink);border-radius:22px;box-shadow:8px 8px 0 var(--turq);padding:26px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;font-weight:900;font-family:'Archivo';font-size:16px;"><span style="font-size:22px;">⭐</span>Google Business Profile</div>
+        <h3 style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(1.5rem,5vw,2.2rem);margin:14px 0 8px;">Léenos en Google</h3>
+        <p style="font-weight:500;font-size:14px;line-height:1.5;opacity:.75;margin:0 0 14px;">Reseñas, horario y cómo llegar — todo en nuestro perfil. Si te gustó, déjanos esas estrellitas. 🌟</p>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px;font-weight:800;"><span style="color:var(--orange);font-size:18px;">★★★★★</span><span style="font-size:13px;opacity:.7;">4,8 · 312 reseñas</span></div>
+        <a href="https://g.page/cri-olla" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;background:var(--ink);color:#fff;border:3px solid var(--ink);border-radius:999px;padding:11px 20px;font-family:'Archivo';font-weight:900;font-size:14px;box-shadow:4px 4px 0 var(--turq);">Ver en Google ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 9. WHATSAPP ============ -->
+  <section style="background:var(--green);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:42px 0;scroll-margin-top:120px;position:relative;overflow:hidden;">
+    <div style="width:min(1180px,94vw);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:22px;">
+      <div style="flex:1 1 280px;">
+        <h2 style="font-family:'Anton';font-weight:400;text-transform:uppercase;color:#fff;font-size:clamp(1.9rem,7vw,3rem);margin:0 0 6px;line-height:.95;text-shadow:3px 3px 0 var(--ink);">¿Mejor por<br>WhatsApp? 💬</h2>
+        <p style="color:#fff;font-weight:700;font-size:1.05rem;margin:0;max-width:420px;">Escríbenos directo con tu pedido o consulta. Te respondemos rapidito, con buena onda.</p>
+      </div>
+      <a href="{{ waLink }}" target="_blank" rel="noopener" style="flex:0 0 auto;text-decoration:none;background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:999px;padding:16px 26px;font-family:'Archivo';font-weight:900;font-size:18px;box-shadow:6px 6px 0 var(--ink);transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px) rotate(-1deg);box-shadow:8px 8px 0 var(--ink)" style-active="transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)">💬 Abrir WhatsApp</a>
+    </div>
+  </section>
+
+  <!-- ============ 12. UBICACION ============ -->
+  <section id="ubicacion" style="padding:48px 0 56px;scroll-margin-top:120px;background:var(--cream);">
+    <div style="width:min(1180px,94vw);margin:0 auto;">
+      <h2 style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:clamp(2.2rem,9vw,4rem);margin:0 0 6px;line-height:.9;">Pásate a<br>vernos 📍</h2>
+      <p style="font-weight:600;font-size:1rem;margin:0 0 26px;">Estamos en pleno Las Condes. Con olor a recién hecho, que no te pierdes.</p>
+      <div style="display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));align-items:start;">
+        <div style="border:3px solid var(--ink);border-radius:20px;overflow:hidden;box-shadow:8px 8px 0 var(--pink);background:var(--ink);">
+          <iframe title="Mapa Cri-Olla" src="https://maps.google.com/maps?q=Los%20Militares%205934%2C%20Las%20Condes%2C%20Santiago&t=&z=16&ie=UTF8&iwloc=&output=embed" style="width:100%;height:320px;border:0;display:block;" loading="lazy"></iframe>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:var(--yellow);border:3px solid var(--ink);border-radius:18px;box-shadow:6px 6px 0 var(--ink);padding:18px 20px;transform:rotate(-1deg);">
+            <div style="font-family:'Archivo';font-weight:900;font-size:13px;letter-spacing:1px;opacity:.7;">DIRECCIÓN</div>
+            <div style="font-family:'Archivo';font-weight:900;font-size:20px;margin-top:2px;">Los Militares 5934, Local H</div>
+            <div style="font-weight:600;font-size:14px;opacity:.75;">Las Condes, Santiago</div>
+          </div>
+          <div style="background:var(--turq);border:3px solid var(--ink);border-radius:18px;box-shadow:6px 6px 0 var(--ink);padding:18px 20px;transform:rotate(1deg);">
+            <div style="font-family:'Archivo';font-weight:900;font-size:13px;letter-spacing:1px;opacity:.7;">TELÉFONO</div>
+            <a href="tel:+56221234567" style="text-decoration:none;color:var(--ink);font-family:'Archivo';font-weight:900;font-size:20px;display:block;margin-top:2px;">+56 2 2123 4567</a>
+          </div>
+          <div style="background:var(--pink);color:#fff;border:3px solid var(--ink);border-radius:18px;box-shadow:6px 6px 0 var(--ink);padding:18px 20px;transform:rotate(-0.5deg);">
+            <div style="font-family:'Archivo';font-weight:900;font-size:13px;letter-spacing:1px;opacity:.85;">HORARIO</div>
+            <div style="font-weight:700;font-size:15px;margin-top:4px;line-height:1.5;">Lun a Vie · 08:00 – 19:00<br>Sábado · 09:00 – 16:00<br>Domingo · cerrado (descansamos rico) 😴</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background:var(--ink);color:var(--cream);border-top:3px solid var(--ink);padding:38px 0 30px;text-align:center;">
+    <div style="display:inline-flex;align-items:center;gap:9px;background:var(--cream);padding:10px 18px;border-radius:16px;box-shadow:5px 5px 0 var(--pink);transform:rotate(-2deg);">
+      <span style="font-family:'Pacifico',cursive;font-size:26px;color:var(--ink);">Cri-Olla</span>
+      <span style="font-size:20px;">🌿</span>
+    </div>
+    <p style="font-weight:600;font-size:14px;opacity:.7;margin:18px 0 4px;">Desayunos, almuerzos y snacks recién hechos · Las Condes</p>
+    <p style="font-weight:600;font-size:12px;opacity:.45;margin:0;">Hecho con harto cariño (y un poco de perejil). Pedidos vía Almuerzo.cl</p>
+  </footer>
+
+  <!-- ============ FLOATING WHATSAPP ============ -->
+  <a href="{{ waLink }}" target="_blank" rel="noopener" style="position:fixed;right:18px;bottom:18px;z-index:150;width:62px;height:62px;border-radius:50%;background:var(--green);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);display:flex;align-items:center;justify-content:center;font-size:30px;text-decoration:none;transition:transform .15s;" style-hover="transform:scale(1.08) rotate(-6deg)" style-active="transform:scale(.94)">💬</a>
+
+  <!-- ============ FLOW MODAL ============ -->
+  <sc-if value="{{ flowOpen }}">
+    <div style="position:fixed;inset:0;z-index:200;background:rgba(21,17,14,.6);display:flex;align-items:center;justify-content:center;padding:16px;">
+      <div style="background:var(--paper);width:100%;max-width:540px;border:4px solid var(--ink);border-radius:26px;box-shadow:0 14px 0 var(--ink);padding:22px;max-height:88vh;overflow:auto;animation:criPop .35s ease-out;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px;">
+          <div>
+            <div style="font-family:'Archivo';font-weight:900;font-size:12px;letter-spacing:1px;color:var(--pink);">CRI-OLLA · PEDIDO</div>
+            <div style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:26px;line-height:1;">{{ flowTitle }}</div>
+          </div>
+          <button onClick="{{ closeFlow }}" style="flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:var(--ink);color:#fff;border:none;font-size:18px;cursor:pointer;font-weight:700;">✕</button>
+        </div>
+
+        <sc-if value="{{ stepLogin }}">
+          <div style="text-align:center;padding:6px 0;">
+            <div style="font-size:46px;">🔒</div>
+            <div style="font-family:'Archivo';font-weight:900;font-size:21px;margin:8px 0 6px;">Primero, identifícate</div>
+            <p style="font-weight:500;font-size:14px;opacity:.75;max-width:380px;margin:0 auto 20px;line-height:1.5;">Para pedir necesitamos saber quién eres. Cri-Olla usa <strong>Almuerzo.cl</strong>: un solo clic, sin escribir email ni contraseña.</p>
+            <button onClick="{{ login }}" style="width:100%;background:var(--green);color:#fff;border:3px solid var(--ink);border-radius:16px;padding:16px;font-family:'Archivo';font-weight:900;font-size:17px;box-shadow:5px 5px 0 var(--ink);cursor:pointer;transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)" style-active="transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)">🔑 Ingresar con Almuerzo.cl</button>
+            <div style="font-size:11px;opacity:.5;margin-top:10px;">SSO simulado · autenticación con un clic</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ stepProduct }}">
+          <div>
+            <div style="font-family:'Archivo';font-weight:900;font-size:18px;margin-bottom:14px;">¿Qué se te antoja hoy? 😋</div>
+            <sc-for list="{{ productOptions }}" as="opt" hint-placeholder-count="3">
+              <button onClick="{{ opt.onPick }}" style="display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--cream);border:3px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);padding:15px 16px;font-family:'Archivo';font-weight:900;font-size:18px;cursor:pointer;margin-bottom:12px;transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px) rotate(-0.6deg);box-shadow:6px 6px 0 var(--ink)" style-active="transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)"><span style="font-size:28px;">{{ opt.emoji }}</span>{{ opt.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ stepSelect }}">
+          <div>
+            <div style="font-family:'Archivo';font-weight:900;font-size:18px;margin-bottom:4px;">Elige tu {{ flowProductLabel }}</div>
+            <div style="font-size:13px;opacity:.6;margin-bottom:14px;">Menú de hoy · {{ currentDayName }}</div>
+            <sc-for list="{{ selectItems }}" as="it" hint-placeholder-count="3">
+              <button onClick="{{ it.onSelect }}" style="display:flex;justify-content:space-between;align-items:center;gap:14px;width:100%;text-align:left;background:var(--cream);border:3px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);padding:14px 16px;cursor:pointer;margin-bottom:12px;transition:transform .12s,box-shadow .12s;" style-hover="transform:translate(-2px,-2px) rotate(0.5deg);box-shadow:6px 6px 0 var(--ink)" style-active="transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)">
+                <span><span style="display:block;font-family:'Archivo';font-weight:900;font-size:17px;">{{ it.name }}</span><span style="display:block;font-size:13px;opacity:.65;margin-top:2px;">{{ it.desc }}</span></span>
+                <span style="font-family:'Anton';font-size:18px;white-space:nowrap;">{{ it.price }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ stepConfirm }}">
+          <div style="text-align:center;padding:6px 0;">
+            <div style="display:inline-block;background:var(--yellow);border:3px solid var(--ink);border-radius:16px;box-shadow:5px 5px 0 var(--ink);padding:18px 24px;transform:rotate(-2deg);">
+              <div style="font-size:48px;">{{ confirmEmoji }}</div>
+              <div style="font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:30px;line-height:1;margin-top:4px;">{{ confirmTitle }}</div>
+            </div>
+            <p style="font-weight:600;font-size:15px;line-height:1.5;max-width:380px;margin:20px auto 14px;">{{ confirmText }}</p>
+            <div style="display:inline-block;background:var(--pink);color:#fff;border:3px solid var(--ink);border-radius:999px;padding:8px 18px;font-family:'Archivo';font-weight:900;font-size:15px;box-shadow:4px 4px 0 var(--ink);">🍴 {{ confirmItemName }}</div>
+            <button onClick="{{ closeFlow }}" style="display:block;width:100%;margin-top:22px;background:var(--ink);color:#fff;border:3px solid var(--ink);border-radius:16px;padding:15px;font-family:'Archivo';font-weight:900;font-size:16px;box-shadow:5px 5px 0 var(--green);cursor:pointer;transition:transform .12s,box-shadow .12s;" style-active="transform:translate(3px,3px);box-shadow:1px 1px 0 var(--green)">¡Genial, listo! 🎉</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: &quot;390&quot;, &quot;height&quot;: &quot;780&quot; },
+  &quot;showTicker&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; },
+  &quot;clientName&quot;: { &quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;María José Tapia&quot;, &quot;tsType&quot;: &quot;string&quot; },
+  &quot;waNumber&quot;: { &quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;56998765432&quot;, &quot;tsType&quot;: &quot;string&quot; }
+}">
+class Component extends DCLogic {
+  state = {
+    session: null,
+    flow: null,
+    menuTab: 'almuerzo',
+    dispo: [
+      { key:'almuerzo', label:'Mesas para almorzar', status:'Disponible', color:'var(--green)', note:'9 mesas libres' },
+      { key:'retiro',   label:'Cupos de retiro',     status:'Pocos cupos', color:'var(--orange)', note:'3 cupos en 20 min' },
+      { key:'desayuno', label:'Mesas de desayuno',   status:'Disponible', color:'var(--green)', note:'Sin espera' },
+      { key:'snack',    label:'Snack express',       status:'Lleno',      color:'var(--ink)',   note:'Vuelve en 15 min' },
+    ],
+  };
+
+  get DAYS(){ return ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']; }
+
+  get MENU(){ return {
+    0:{ desayuno:[{name:'Desayuno criollo',desc:'Pan amasado, huevos y café',price:'$4.900'},{name:'Jugo de naranja',desc:'Recién exprimido',price:'$2.500'}], almuerzo:[{name:'Pollo asado familiar',desc:'Con papas doradas',price:'$7.900'},{name:'Tallarines con salsa',desc:'A la boloñesa de la casa',price:'$6.400'}], snack:[{name:'Pie de limón',desc:'Merengue alto',price:'$3.200'},{name:'Chocolate caliente',desc:'Espeso, como debe ser',price:'$2.800'}] },
+    1:{ desayuno:[{name:'Tostadas con palta',desc:'Y huevo a la copa',price:'$4.500'},{name:'Yogurt con granola',desc:'Casero, con miel',price:'$3.500'}], almuerzo:[{name:'Cazuela de vacuno',desc:'Calientita, con choclo',price:'$6.900'},{name:'Pastel de choclo',desc:'Dorado al horno',price:'$7.200'}], snack:[{name:'Empanada de pino',desc:'Jugosa, con aceituna',price:'$2.900'},{name:'Sopaipillas pasadas',desc:'Con chancaca',price:'$2.200'}] },
+    2:{ desayuno:[{name:'Pan amasado y queso',desc:'Recién horneado',price:'$3.800'},{name:'Avena con frutas',desc:'Tibia, con plátano',price:'$3.600'}], almuerzo:[{name:'Charquicán',desc:'Con huevo frito encima',price:'$6.200'},{name:'Merluza frita',desc:'Con ensalada chilena',price:'$7.400'}], snack:[{name:'Completo italiano',desc:'Palta, tomate y mayo',price:'$3.400'},{name:'Café y kuchen',desc:'Kuchen de nuez',price:'$3.900'}] },
+    3:{ desayuno:[{name:'Huevos revueltos',desc:'Con tostadas mantequilladas',price:'$4.200'},{name:'Smoothie verde',desc:'Espinaca, manzana, jengibre',price:'$3.700'}], almuerzo:[{name:'Lentejas con longaniza',desc:'Bien condimentadas',price:'$6.100'},{name:'Pollo al jugo con puré',desc:'Puré sedoso',price:'$6.900'}], snack:[{name:'Brownie con nuez',desc:'Tibio, denso',price:'$2.900'},{name:'Té con galletas',desc:'De la abuela',price:'$2.300'}] },
+    4:{ desayuno:[{name:'Croissant jamón queso',desc:'Calientito',price:'$4.300'},{name:'Bowl de frutas',desc:'De temporada',price:'$3.900'}], almuerzo:[{name:'Porotos con riendas',desc:'Con tallarines',price:'$6.000'},{name:'Lasaña al horno',desc:'Bien gratinada',price:'$7.100'}], snack:[{name:'Churros rellenos',desc:'Manjar o chocolate',price:'$2.800'},{name:'Jugo natural',desc:'Frutilla o durazno',price:'$2.600'}] },
+    5:{ desayuno:[{name:'Panqueques con manjar',desc:'Torre de tres',price:'$4.600'},{name:'Café cortado',desc:'Con medialuna',price:'$3.300'}], almuerzo:[{name:'Fritura de pescado',desc:'Con arroz graneado',price:'$7.500'},{name:'Arroz con pollo',desc:'A la criolla',price:'$6.500'}], snack:[{name:'Empanada de queso',desc:'Crujiente',price:'$2.700'},{name:'Alfajor artesanal',desc:'Relleno de manjar',price:'$1.900'}] },
+    6:{ desayuno:[{name:'Waffles con frutas',desc:'Con sirope de maple',price:'$4.900'},{name:'Huevos benedictinos',desc:'Sobre muffin inglés',price:'$5.400'}], almuerzo:[{name:'Asado con papas',desc:'Al horno, fin de semana',price:'$8.200'},{name:'Risotto de champiñones',desc:'Cremoso, con parmesano',price:'$7.800'}], snack:[{name:'Sándwich club',desc:'Triple, con papas',price:'$4.100'},{name:'Limonada de menta',desc:'Bien helada',price:'$2.500'}] },
+  }; }
+
+  get STATUSES(){ return [
+    { label:'Disponible', color:'var(--green)', note:()=>this.pick(['Sin espera','Mesas libres','Listo ahora','Te esperamos']) },
+    { label:'Pocos cupos', color:'var(--orange)', note:()=>this.pick(['Quedan pocos','Casi lleno','Apúrate','Reserva ya']) },
+    { label:'Lleno', color:'var(--ink)', note:()=>this.pick(['En 15 min','Lista de espera','Completo','Vuelve pronto']) },
+  ]; }
+
+  pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+
+  componentDidMount(){
+    this._t = setInterval(() => {
+      this.setState(s => {
+        const d = s.dispo.slice();
+        const i = Math.floor(Math.random()*d.length);
+        const st = this.STATUSES[Math.floor(Math.random()*this.STATUSES.length)];
+        d[i] = { ...d[i], status:st.label, color:st.color, note:st.note() };
+        return { dispo:d };
+      });
+    }, 2800);
+  }
+  componentWillUnmount(){ clearInterval(this._t); }
+
+  clientName(){ return this.props.clientName || 'María José Tapia'; }
+
+  startFlow(type){
+    if(!this.state.session){
+      this.setState({ flow:{ type, step:'login', productType: type==='listo'?'almuerzo':null, item:null } });
+      return;
+    }
+    const step = type==='listo' ? 'select' : 'product';
+    this.setState({ flow:{ type, step, productType: type==='listo'?'almuerzo':null, item:null } });
+  }
+  login(){
+    this.setState(s => {
+      const f = s.flow; let nf = f;
+      if(f){
+        const step = f.type==='listo' ? 'select' : 'product';
+        nf = { ...f, step, productType: f.type==='listo'?'almuerzo':f.productType };
+      }
+      return { session:{ name:this.clientName() }, flow:nf };
+    });
+  }
+  loginDirect(){ this.setState({ session:{ name:this.clientName() } }); }
+  logout(){ this.setState({ session:null, flow:null }); }
+  pickProduct(pt){ this.setState(s => ({ flow:{ ...s.flow, productType:pt, step:'select' } })); }
+  pickItem(it){ this.setState(s => ({ flow:{ ...s.flow, item:it, step:'confirm' } })); }
+  closeFlow(){ this.setState({ flow:null }); }
+  setTab(t){ this.setState({ menuTab:t }); }
+
+  renderVals(){
+    const s = this.state, f = s.flow;
+    const day = new Date().getDay();
+    const menu = this.MENU[day];
+    const firstName = s.session ? s.session.name.split(' ')[0] : '';
+    const plabels = { desayuno:'Desayuno', almuerzo:'Almuerzo', snack:'Snack' };
+    const ftitles = { listo:'Listo al llegar', recoger:'Recoger y llevar', reservar:'Reservar mesa' };
+    const ctext = {
+      listo:'Tu almuerzo estará caliente y empacado justo cuando cruces la puerta. Cero espera, puro sabor.',
+      recoger:'Pasa a retirarlo cuando quieras — lo dejamos listo y empacado para llevar.',
+      reservar:'Tu mesa quedó reservada. Llega con hambre, del resto nos encargamos nosotros.',
+    };
+    const cemoji = { listo:'⏰', recoger:'🛍️', reservar:'🍽️' };
+
+    const allP = [
+      { key:'desayuno', label:'Desayuno', emoji:'🥐' },
+      { key:'almuerzo', label:'Almuerzo', emoji:'🍽️' },
+      { key:'snack', label:'Snack', emoji:'🥪' },
+    ];
+    const productOptions = allP.map(p => ({ ...p, onPick:()=>this.pickProduct(p.key) }));
+    const selBase = (f && f.productType && menu) ? menu[f.productType] : [];
+    const selectItems = selBase.map(it => ({ ...it, onSelect:()=>this.pickItem(it) }));
+
+    const tabBase = "font-family:'Archivo';font-weight:900;font-size:15px;border:3px solid var(--cream);border-radius:999px;padding:11px 18px;cursor:pointer;box-shadow:3px 3px 0 var(--pink);transition:transform .12s;";
+    const act = 'background:var(--pink);color:#fff;';
+    const ina = 'background:var(--ink);color:var(--cream);';
+    const tabDStyle = tabBase + (s.menuTab==='desayuno'?act:ina);
+    const tabAStyle = tabBase + (s.menuTab==='almuerzo'?act:ina);
+    const tabSStyle = tabBase + (s.menuTab==='snack'?act:ina);
+    const menuItems = (menu && menu[s.menuTab]) ? menu[s.menuTab] : [];
+
+    const novRaw = [
+      { tag:'NUEVO', title:'Pastel de choclo XL', text:'Volvió el favorito de la casa: cremoso, dorado y del porte de tu hambre.', color:'var(--pink)', dark:true, rot:'-3deg' },
+      { tag:'PROMO', title:'2x1 en desayunos', text:'Trae a tu compañer@ de oficina. Lunes y martes, antes de las 11:00.', color:'var(--turq)', dark:false, rot:'2deg' },
+      { tag:'SNACK', title:'Sopaipillas a las 16:00', text:'Llueva o truene, salen recién pasadas. El olor te va a delatar.', color:'var(--yellow)', dark:false, rot:'-2deg' },
+      { tag:'AVISO', title:'Pide desde tu cama', text:'Ya puedes dejar tu almuerzo encargado y llegar a comerlo calentito.', color:'var(--orange)', dark:false, rot:'3deg' },
+    ];
+    const novedades = novRaw.map(n => ({
+      tag:n.tag, title:n.title, text:n.text,
+      cardStyle: 'background:'+n.color+';border:3px solid var(--ink);border-radius:6px;box-shadow:7px 7px 0 var(--ink);padding:18px 18px 24px;transform:rotate('+n.rot+');color:'+(n.dark?'#fff':'var(--ink)')+';',
+    }));
+
+    const dispo = s.dispo.map(d => ({
+      label:d.label, status:d.status, note:d.note,
+      badgeStyle: 'display:inline-flex;align-items:center;gap:8px;margin-top:11px;background:'+d.color+';color:#fff;border:2px solid var(--ink);border-radius:999px;padding:5px 13px;font-weight:800;font-size:14px;',
+    }));
+
+    const waMsg = encodeURIComponent('¡Hola Cri-Olla! 👋 Quiero hacer un pedido / consulta 🍴');
+    const waLink = 'https://wa.me/' + (this.props.waNumber || '56998765432') + '?text=' + waMsg;
+
+    return {
+      loggedIn: !!s.session, loggedOut: !s.session,
+      firstName, sessionName: s.session ? s.session.name : '',
+      startListo:()=>this.startFlow('listo'),
+      startRecoger:()=>this.startFlow('recoger'),
+      startReservar:()=>this.startFlow('reservar'),
+      loginDirect:()=>this.loginDirect(), logout:()=>this.logout(), login:()=>this.login(),
+      flowOpen: !!f,
+      stepLogin: !!(f && f.step==='login'),
+      stepProduct: !!(f && f.step==='product'),
+      stepSelect: !!(f && f.step==='select'),
+      stepConfirm: !!(f && f.step==='confirm'),
+      flowTitle: f ? ftitles[f.type] : '',
+      flowProductLabel: (f && f.productType) ? plabels[f.productType] : '',
+      productOptions, selectItems,
+      confirmTitle: firstName ? ('¡Listo, '+firstName+'!') : '¡Listo!',
+      confirmText: f ? ctext[f.type] : '',
+      confirmEmoji: f ? cemoji[f.type] : '🎉',
+      confirmItemName: (f && f.item) ? f.item.name : '',
+      closeFlow:()=>this.closeFlow(),
+      currentDayName: this.DAYS[day],
+      currentDayNameUpper: this.DAYS[day].toUpperCase(),
+      menuItems, tabDStyle, tabAStyle, tabSStyle,
+      onTabD:()=>this.setTab('desayuno'), onTabA:()=>this.setTab('almuerzo'), onTabS:()=>this.setTab('snack'),
+      novedades, dispo,
+      showTicker: this.props.showTicker ?? true,
+      waLink,
+    };
+  }
+}
+</script>
+</body>
+</html>
