@@ -13,4 +13,6 @@ Sitio estático (`index.html` + `support.js`), sin build.
 - Cada web de restaurante sigue este mismo modelo.
 - **Origen del cliente:** `profiles.source_restaurant_id` (uuid, FK a `restaurants.id`, proyecto Supabase `almuerzov5`). `NULL` = ingresó por almuerzo.cl; un id = ingresó por el portal de ese restaurante. Se fija al crear la cuenta y no se cambia; el cliente sigue siendo cliente general de almuerzo.cl. No confundir con `profiles.restaurant_id`, que solo identifica al restaurante que administra un usuario `RESTAURANT_ADMIN`.
 
+- **ID de este restaurante:** `c8f518ae-2da9-4bb4-a95f-cca4c6b96056` (Cri-Olla - Parque Titanium). El enlace de registro del hero lo envía como `?source=<id>`; la app de almuerzo.cl debe guardarlo en `profiles.source_restaurant_id` al crear el perfil (pendiente en esa app).
+
 - Sin secretos ni variables de build. `config.js` (valores públicos de Supabase) todavía no lo carga `index.html`.
