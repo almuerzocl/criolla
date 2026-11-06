@@ -23,8 +23,11 @@ Sitio estático (HTML + CSS + JavaScript), **sin build ni dependencias**. Archiv
 - **Origen del cliente:** `profiles.source_restaurant_id` (uuid, FK a `restaurants.id`). `NULL` = ingresó por almuerzo.cl; un id = ingresó por el portal de ese restaurante.
   El enlace «Crear cuenta» manda `?source=<id>`; la PWA lo guarda al crear el perfil (ver `CONTENIDO.md` de `v5-pwa`). No confundir con `profiles.restaurant_id` (restaurante que administra un `RESTAURANT_ADMIN`).
 
-- **Encuestas y comentarios:** tablas `feedback`, `polls`, `poll_options`, `poll_votes` ya creadas en almuerzo.cl (migración 059 de `v5-pwa`). La sección del sitio aún no escribe: sus controles están
-  desactivados con un aviso hasta la etapa B (login propio o formulario en la PWA).
+- **Encuestas y comentarios (etapa B, `surveys.js`):** el cliente inicia sesión en el sitio con su correo y clave de almuerzo.cl (Supabase Auth por REST, sesión en `localStorage` de este dominio; sin librerías).
+  Escribe en `feedback` (puntaje, aspectos, comentario; sobre un pedido completado de retiro o general) y en `poll_votes` (voto de la encuesta de la semana, cambiable mientras está abierta). RLS: cada cliente solo crea y ve lo suyo.
+  La encuesta de la semana (`polls`/`poll_options` activas del local y `poll_results`) se muestra a todos con resultados reales; votar exige sesión. Sin encuesta activa muestra «Estamos preparando la próxima votación».
+  Quien entra solo con Google o enlace mágico no tiene clave: debe crearla en la PWA («¿Olvidaste tu contraseña?»). Si la cuenta no tiene perfil (`profiles`), se le pide terminar el registro en la PWA.
+  Las encuestas las crea el administrador del local (pendiente: pantalla en el dashboard del restaurante); mientras tanto se pueden insertar en `polls` y `poll_options`.
 
 ## Contenido propio (se edita en este repo)
 
