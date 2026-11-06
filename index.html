@@ -171,31 +171,65 @@
       <h2 class="h2" id="encuestas-titulo">Tu opinión <span class="mark mark--yellow">cuenta</span></h2>
       <p class="lead lead--narrow">Responde en menos de un minuto y ayúdanos a mejorar el menú, la atención y los tiempos de retiro.</p>
       <div class="surveys__grid">
-        <form class="card card--paper survey" aria-describedby="encuesta-aviso">
-          <p class="label">Tu último pedido</p>
-          <h3 class="card__title card__title--sm">¿Cómo estuvo tu almuerzo?</h3>
-          <fieldset disabled>
-            <legend class="sr">Puntaje de 1 a 5</legend>
-            <div class="rating">
-              <button type="button" aria-label="Puntaje 1">1</button><button type="button" aria-label="Puntaje 2">2</button><button type="button" aria-label="Puntaje 3">3</button><button type="button" aria-label="Puntaje 4">4</button><button type="button" aria-label="Puntaje 5">5</button>
+        <div class="card card--paper survey" id="encuesta-card">
+          <!-- Sin sesión -->
+          <div id="auth-out" class="survey__pane">
+            <p class="label">Para responder</p>
+            <h3 class="card__title card__title--sm">Ingresa con tu cuenta de Almuerzo.cl</h3>
+            <form id="login-form" class="form" novalidate>
+              <label for="login-email">Correo</label>
+              <input id="login-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+              <label for="login-pass">Clave</label>
+              <input id="login-pass" name="password" type="password" autocomplete="current-password" required>
+              <button class="btn btn--yellow" type="submit" id="login-btn">Ingresar</button>
+              <p class="msg" id="login-msg" role="alert"></p>
+            </form>
+            <p class="note">¿Entras con Google o con enlace mágico y no tienes clave? Créala en <a data-link="login" href="https://app2.almuerzo.cl/login">Almuerzo.cl</a> con «¿Olvidaste tu contraseña?» y vuelve aquí.</p>
+            <p class="note">¿Primera vez? <a data-link="register" href="https://app2.almuerzo.cl/login?mode=register">Crea tu cuenta</a>.</p>
+          </div>
+          <!-- Con sesión -->
+          <form id="feedback-form" class="form survey__pane" hidden novalidate>
+            <p class="session"><span id="session-name"></span> <button type="button" class="linklike" id="logout-btn">Salir</button></p>
+            <h3 class="card__title card__title--sm">¿Cómo estuvo tu almuerzo?</h3>
+            <fieldset>
+              <legend class="small-strong">¿Sobre qué quieres opinar?</legend>
+              <div class="chips chips--light" id="fb-mode">
+                <button type="button" data-mode="order" aria-pressed="false">Sobre un pedido</button>
+                <button type="button" data-mode="general" aria-pressed="true">Comentario general</button>
+              </div>
+            </fieldset>
+            <div id="fb-order-box" hidden>
+              <label for="fb-order">Elige el pedido</label>
+              <select id="fb-order"></select>
             </div>
-            <p class="small-strong">¿Qué quieres destacar?</p>
-            <div class="chips chips--light">
-              <button type="button">Sabor</button><button type="button">Porción</button><button type="button">Tiempo de espera</button><button type="button">Atención</button>
-            </div>
-            <div class="chips chips--light">
-              <button type="button" class="is-on">Sobre un pedido</button><button type="button">Comentario general</button>
-            </div>
-            <label class="small-strong" for="comentario">Déjanos tus comentarios</label>
-            <textarea id="comentario" rows="3" placeholder="Cuéntanos qué te pareció"></textarea>
-            <button type="button" class="btn btn--yellow">Enviar respuesta</button>
-          </fieldset>
-          <p class="note" id="encuesta-aviso">Pronto podrás responder desde esta página con tu cuenta de Almuerzo.cl.</p>
-        </form>
-        <div class="card card--yellow">
+            <p class="note" id="fb-no-orders" hidden>Aún no tienes pedidos completados para calificar.</p>
+            <fieldset>
+              <legend class="small-strong">Puntaje de 1 a 5</legend>
+              <div class="rating" id="fb-rating">
+                <button type="button" data-v="1" aria-pressed="false" aria-label="Puntaje 1">1</button><button type="button" data-v="2" aria-pressed="false" aria-label="Puntaje 2">2</button><button type="button" data-v="3" aria-pressed="false" aria-label="Puntaje 3">3</button><button type="button" data-v="4" aria-pressed="false" aria-label="Puntaje 4">4</button><button type="button" data-v="5" aria-pressed="false" aria-label="Puntaje 5">5</button>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="small-strong">¿Qué quieres destacar?</legend>
+              <div class="chips chips--light" id="fb-aspects">
+                <button type="button" aria-pressed="false">Sabor</button><button type="button" aria-pressed="false">Porción</button><button type="button" aria-pressed="false">Tiempo de espera</button><button type="button" aria-pressed="false">Atención</button>
+              </div>
+            </fieldset>
+            <label for="fb-comment">Déjanos tus comentarios</label>
+            <textarea id="fb-comment" rows="3" maxlength="2000" placeholder="Cuéntanos qué te pareció"></textarea>
+            <button class="btn btn--yellow" type="submit" id="fb-send">Enviar respuesta</button>
+            <p class="msg" id="fb-msg" role="status"></p>
+          </form>
+          <div id="auth-noprofile" class="survey__pane" hidden>
+            <h3 class="card__title card__title--sm">Falta terminar tu cuenta</h3>
+            <p>Entra una vez a Almuerzo.cl para completar tu perfil y vuelve a intentarlo.</p>
+            <a class="btn btn--yellow btn--sm" data-link="login" href="https://app2.almuerzo.cl/login">Ir a Almuerzo.cl</a>
+          </div>
+        </div>
+
+        <div class="card card--yellow" id="poll-card" aria-live="polite">
           <p class="label">Encuesta de la semana</p>
-          <h3 class="card__title card__title--sm">¿Qué plato quieres ver el próximo lunes?</h3>
-          <p>Estamos preparando la primera votación. Cuando esté lista la verás aquí.</p>
+          <div id="poll-body"><p>Cargando la encuesta…</p></div>
         </div>
       </div>
     </div>
@@ -251,6 +285,7 @@
 
 <script src="/config.js"></script>
 <script src="/app.js" defer></script>
+<script src="/surveys.js" defer></script>
 <script src="/analytics.js" defer></script>
 </body>
 </html>
