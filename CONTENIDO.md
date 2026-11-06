@@ -37,6 +37,10 @@ Sitio estático (HTML + CSS + JavaScript), **sin build ni dependencias**. Archiv
 
 - `<title>`, descripción, `lang="es-CL"`, canonical, Open Graph/Twitter, datos estructurados `Restaurant` (JSON-LD), favicon, `site.webmanifest`, `robots.txt` y `sitemap.xml`.
 - `_headers`: CSP estricta (solo este origen, Google Fonts, el Supabase de almuerzo.cl y el mapa), `nosniff`, `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors 'none'` y caché corta.
-- Sin Babel/React ni scripts de terceros: ya no depende de unpkg. Fuentes reducidas a 3 familias.
+- **Google Analytics 4** (`analytics.js`, ID en `config.js → analyticsId`, la misma propiedad que la PWA): con aviso de cookies como en la PWA. Si el visitante acepta, GA completo con cookies; si rechaza o no elige,
+  medición anónima sin cookies ni señales de Google. Evento `cta_click` en los botones que llevan a Almuerzo.cl (`cta` = ingresar, crear cuenta, pedir, reservar, mis pedidos). `analyticsId: ""` lo apaga todo (también el aviso).
+  La elección de cookies es por dominio: no se comparte con app2.almuerzo.cl. El pop-up del otro local espera a que se responda el aviso. La CSP de `_headers` permite solo Google Tag Manager y los endpoints de GA.
+  El beacon de Cloudflare Web Analytics sigue bloqueado por la CSP: desactivarlo en el panel de Cloudflare.
+- Sin Babel/React ni otros scripts de terceros: ya no depende de unpkg. Fuentes reducidas a 3 familias.
 - Accesibilidad: enlace «Saltar al contenido», foco visible, `prefers-reduced-motion`, contraste revisado (texto oscuro sobre rosa/turquesa/amarillo), pop-up con `<dialog>` (foco atrapado, Esc, devuelve el foco), etiquetas en controles y regiones en vivo.
 - Se eliminó lo simulado del sitio anterior: login falso, «EN VIVO» aleatorio, confirmaciones de pedido sin pedido, reseñas y teléfonos de ejemplo.

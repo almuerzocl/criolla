@@ -48,6 +48,7 @@
       reserve: `${base}${home}`,
       terms: `${base}/terminos`,
       privacy: `${base}/privacidad`,
+      cookies: `${base}/cookies`,
     };
     document.querySelectorAll("[data-link]").forEach((a) => { const t = targets[a.dataset.link]; if (t) a.href = t; });
   }
@@ -257,7 +258,11 @@
     $("#otro-ahora-no").addEventListener("click", () => dlg.close());
     dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
 
-    setTimeout(() => { if (!document.hidden && !dlg.open) dlg.showModal(); }, (o.showAfterSeconds || 4) * 1000);
+    const schedule = () => setTimeout(() => { if (!document.hidden && !dlg.open) dlg.showModal(); }, (o.showAfterSeconds || 4) * 1000);
+    // Si el aviso de cookies sigue sin respuesta, el pop-up espera: no se apilan dos avisos y el modal no bloquea el de cookies.
+    let pending = false;
+    try { pending = !!C.analyticsId && localStorage.getItem("cookie-consent") === null; } catch { /* sin almacenamiento */ }
+    if (pending) window.addEventListener("cookie-consent-change", schedule, { once: true }); else schedule();
   }
 
   /* ---------- Inicio ---------- */
