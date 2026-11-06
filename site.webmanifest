@@ -1,0 +1,11 @@
+{
+  "name": "Cri-Olla · Almuerzos criollos",
+  "short_name": "Cri-Olla",
+  "description": "Menú del día de Cri-Olla en Parque Titanium, Las Condes. Pide, retira y reserva con Almuerzo.cl.",
+  "lang": "es-CL",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#FFF3E2",
+  "theme_color": "#15110E",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
