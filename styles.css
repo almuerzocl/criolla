@@ -150,6 +150,12 @@ ul,ol{padding:0;list-style:none}
 .popup p{margin-bottom:8px}
 .popup__x{position:absolute;top:10px;right:10px;width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;border:0;font-size:1.6rem;line-height:1;cursor:pointer}
 
+/* ---------- Aviso de cookies ---------- */
+.cookie{position:fixed;left:0;right:0;bottom:0;z-index:200;margin:0 auto 12px;width:min(760px,100% - 24px);background:var(--paper);border:var(--line);border-radius:18px;box-shadow:var(--shadow);padding:16px 18px;display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:space-between;font-size:.92rem}
+.cookie p{flex:1 1 320px}
+.cookie a{font-weight:800}
+.cookie__btns{display:flex;flex-wrap:wrap;gap:10px}
+
 /* ---------- Movimiento reducido ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}

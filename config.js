@@ -8,6 +8,8 @@ window.CRIOLLA_CONFIG = {
   pwaUrl: "https://app2.almuerzo.cl",
   timezone: "America/Santiago",
   refreshSeconds: 60,
+  // Google Analytics 4 (misma propiedad que la PWA de almuerzo.cl). Vacío = sin analítica y sin aviso de cookies.
+  analyticsId: "G-Q31E5NMWTK",
   // Pop-up «¿Sabías que tenemos otro local?». Poner enabled:false para apagarlo.
   otherLocal: {
     enabled: true,
