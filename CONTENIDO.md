@@ -23,6 +23,9 @@ Sitio estático (HTML + CSS + JavaScript), **sin build ni dependencias**. Archiv
 - **Origen del cliente:** `profiles.source_restaurant_id` (uuid, FK a `restaurants.id`). `NULL` = ingresó por almuerzo.cl; un id = ingresó por el portal de ese restaurante.
   El enlace «Crear cuenta» manda `?source=<id>`; la PWA lo guarda al crear el perfil (ver `CONTENIDO.md` de `v5-pwa`). No confundir con `profiles.restaurant_id` (restaurante que administra un `RESTAURANT_ADMIN`).
 
+- **Encuestas y comentarios:** tablas `feedback`, `polls`, `poll_options`, `poll_votes` ya creadas en almuerzo.cl (migración 059 de `v5-pwa`). La sección del sitio aún no escribe: sus controles están
+  desactivados con un aviso hasta la etapa B (login propio o formulario en la PWA).
+
 ## Contenido propio (se edita en este repo)
 
 - **Novedades:** `novedades.json` (lista de `{tag, title, text}`; si está vacía la sección se oculta).
