@@ -133,20 +133,28 @@
       return;
     }
 
-    // Filtros por tipo de menú (categorías reales del local)
+    // Categorías del gestor de menú, en su orden; las sin categoría van al final
     const catNames = [];
-    state.items.forEach((it) => { const n = catName(it); if (n && !catNames.includes(n)) catNames.push(n); });
+    state.cats.forEach((c) => { if (state.items.some((it) => it.category_id === c.id) && !catNames.includes(c.name)) catNames.push(c.name); });
+    state.items.forEach((it) => { const n = catName(it) || "Otros"; if (!catNames.includes(n)) catNames.push(n); });
+    if (state.filter !== "all" && !catNames.includes(state.filter)) state.filter = "all";
     if (catNames.length > 1) {
       filters.hidden = false;
       const mk = (value, label) => { const b = el("button", "", label); b.type = "button"; b.setAttribute("aria-pressed", String(state.filter === value)); b.addEventListener("click", () => { state.filter = value; renderMenu(); }); return b; };
       filters.replaceChildren(mk("all", "Todos"), ...catNames.map((n) => mk(n, n)));
     } else { filters.hidden = true; state.filter = "all"; }
 
-    const shown = state.items
-      .filter((it) => state.filter === "all" || catName(it) === state.filter)
-      .sort((a, b) => Number(isSoldOut(a)) - Number(isSoldOut(b)) || (a.position ?? 0) - (b.position ?? 0));
-
-    grid.replaceChildren(...shown.map((it, i) => dishCard(it, i)));
+    const nodes = [];
+    let i = 0;
+    catNames.filter((n) => state.filter === "all" || n === state.filter).forEach((n) => {
+      const dishes = state.items
+        .filter((it) => (catName(it) || "Otros") === n)
+        .sort((a, b) => Number(isSoldOut(a)) - Number(isSoldOut(b)) || (a.position ?? 0) - (b.position ?? 0));
+      if (!dishes.length) return;
+      nodes.push(el("h3", "menu__cat", n));
+      dishes.forEach((it) => nodes.push(dishCard(it, i++)));
+    });
+    grid.replaceChildren(...nodes);
 
     const allOut = state.items.every(isSoldOut);
     const parts = [];
@@ -199,7 +207,7 @@
     const id = encodeURIComponent(C.restaurantId);
     try {
       const [items, cats] = await Promise.all([
-        api(`menu_items?restaurant_id=eq.${id}&is_menu_del_dia=eq.true&select=id,name,description,price,takeaway_price,category,category_id,image_url,is_available,is_available_for_takeaway,stock_managed,current_stock,disabled_by_stock,position&order=position`),
+        api(`menu_items?restaurant_id=eq.${id}&select=id,name,description,price,takeaway_price,category,category_id,image_url,is_available,is_available_for_takeaway,stock_managed,current_stock,disabled_by_stock,position&order=position`),
         api(`menu_categories?restaurant_id=eq.${id}&is_visible=eq.true&select=id,name,position&order=position`),
       ]);
       state.items = items; state.cats = cats; state.updated = new Date();

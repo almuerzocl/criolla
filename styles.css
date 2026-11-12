@@ -91,6 +91,7 @@ ul,ol{padding:0;list-style:none}
 .chips--light button{border-color:var(--ink);color:var(--ink);padding:8px 14px;font-size:.9rem}
 .chips--light button.is-on{background:var(--ink);color:#fff}
 .menu__grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.menu__cat{color:var(--cream);grid-column:1/-1;font-size:1.4rem;margin-top:10px;padding-bottom:6px;border-bottom:3px solid var(--yellow)}
 .menu__msg{grid-column:1/-1;background:var(--cream);color:var(--ink);border-radius:16px;padding:20px;font-weight:700;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
 .dish{background:var(--cream);color:var(--ink);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:10px;box-shadow:6px 6px 0 var(--accent,var(--yellow))}
 .dish.is-out{opacity:.78}
