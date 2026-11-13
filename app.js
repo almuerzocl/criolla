@@ -133,10 +133,9 @@
       return;
     }
 
-    // Categorías del gestor de menú, en su orden; las sin categoría van al final
-    const catNames = [];
-    state.cats.forEach((c) => { if (state.items.some((it) => it.category_id === c.id) && !catNames.includes(c.name)) catNames.push(c.name); });
-    state.items.forEach((it) => { const n = catName(it) || "Otros"; if (!catNames.includes(n)) catNames.push(n); });
+    // Categorías visibles con al menos un plato disponible, ordenadas según la hora
+    const groups = categoryGroups();
+    const catNames = groups.map((g) => g.name);
     if (state.filter !== "all" && !catNames.includes(state.filter)) state.filter = "all";
     if (catNames.length > 1) {
       filters.hidden = false;
@@ -146,14 +145,11 @@
 
     const nodes = [];
     let i = 0;
-    catNames.filter((n) => state.filter === "all" || n === state.filter).forEach((n) => {
-      const dishes = state.items
-        .filter((it) => (catName(it) || "Otros") === n)
-        .sort((a, b) => Number(isSoldOut(a)) - Number(isSoldOut(b)) || (a.position ?? 0) - (b.position ?? 0));
-      if (!dishes.length) return;
-      nodes.push(el("h3", "menu__cat", n));
-      dishes.forEach((it) => nodes.push(dishCard(it, i++)));
+    groups.filter((g) => state.filter === "all" || g.name === state.filter).forEach((g) => {
+      nodes.push(el("h3", "menu__cat", g.name));
+      g.dishes.forEach((it) => nodes.push(dishCard(it, i++)));
     });
+    if (!nodes.length) nodes.push(el("p", "menu__msg", "Por ahora no hay platos disponibles. Vuelve en un rato."));
     grid.replaceChildren(...nodes);
 
     const allOut = state.items.every(isSoldOut);
@@ -162,6 +158,30 @@
     if (allOut) parts.push("Por ahora se agotó todo el menú del día");
     else if (!state.openToday) parts.push("Hoy el local está cerrado: este es el último menú publicado");
     meta.textContent = parts.join(" · ");
+  }
+
+  /* Horarios: de 9:00 a 11:00 va primero Desayuno; de 11:00 a 15:00, el almuerzo (en este orden). */
+  const BREAKFAST = [/desayuno/i];
+  const LUNCH = [/econ[oó]mico/i, /especial/i, /llevar/i];
+  function categoryGroups() {
+    const hiddenIds = new Set(state.cats.filter((c) => c.is_visible === false).map((c) => c.id));
+    const hiddenNames = new Set(state.cats.filter((c) => c.is_visible === false).map((c) => c.name));
+    const byName = new Map();
+    state.items.forEach((it) => {
+      if (hiddenIds.has(it.category_id)) return;
+      const n = catName(it) || "Otros";
+      if (hiddenNames.has(n)) return;
+      if (!byName.has(n)) byName.set(n, []);
+      byName.get(n).push(it);
+    });
+    const pos = (n) => { const c = state.cats.find((x) => x.name === n); return c ? (c.position ?? 0) : 999; };
+    const { minutes } = nowInChile();
+    const patterns = minutes >= 540 && minutes < 660 ? BREAKFAST : minutes >= 660 && minutes < 900 ? LUNCH : [];
+    const rank = (n) => { const k = patterns.findIndex((re) => re.test(n)); return k === -1 ? patterns.length : k; };
+    return [...byName.entries()]
+      .filter(([, dishes]) => dishes.some((it) => !isSoldOut(it)))
+      .map(([name, dishes]) => ({ name, dishes: dishes.slice().sort((a, b) => Number(isSoldOut(a)) - Number(isSoldOut(b)) || (a.position ?? 0) - (b.position ?? 0)) }))
+      .sort((a, b) => rank(a.name) - rank(b.name) || pos(a.name) - pos(b.name));
   }
 
   function catName(it) {
@@ -208,7 +228,7 @@
     try {
       const [items, cats] = await Promise.all([
         api(`menu_items?restaurant_id=eq.${id}&select=id,name,description,price,takeaway_price,category,category_id,image_url,is_available,is_available_for_takeaway,stock_managed,current_stock,disabled_by_stock,position&order=position`),
-        api(`menu_categories?restaurant_id=eq.${id}&is_visible=eq.true&select=id,name,position&order=position`),
+        api(`menu_categories?restaurant_id=eq.${id}&select=id,name,position,is_visible&order=position`),
       ]);
       state.items = items; state.cats = cats; state.updated = new Date();
       renderMenu();
