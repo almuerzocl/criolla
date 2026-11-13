@@ -1,0 +1,33 @@
+/* Panel de Cri-Olla: reutiliza las variables y botones de /styles.css */
+.panel-body{background:var(--cream)}
+.pn-head{background:var(--paper);border-bottom:var(--line);position:sticky;top:0;z-index:50}
+.pn-head__in{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:10px 0}
+.pn-nav{display:flex;flex-wrap:wrap;gap:4px 16px;flex:1}
+.pn-nav a{font-weight:800;text-decoration:none;padding:6px 2px;border-bottom:3px solid transparent}
+.pn-nav a:hover,.pn-nav a[aria-current=page]{border-bottom-color:var(--pink)}
+.pn-who{display:flex;align-items:center;gap:10px;font-weight:700}
+.pn-main{padding:28px 0 64px;outline:none}
+.pn-sub{font-family:var(--font-display);font-weight:400;text-transform:uppercase;font-size:1.5rem;margin:28px 0 10px}
+.pn-msg{padding:12px 14px;border:var(--line);border-radius:12px;background:var(--paper);font-weight:700}
+.pn-msg--err{background:#ffd9df;color:var(--red)}
+.pn-msg--ok{background:#d8f5de;color:var(--green)}
+.pn-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:8px}
+.pn-stat{background:var(--yellow);border:var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column}
+.pn-stat strong{font-family:var(--font-display);font-size:2.4rem;line-height:1;font-weight:400}
+.pn-tablewrap{overflow-x:auto;border:var(--line);border-radius:14px;background:var(--paper)}
+.pn-table{width:100%;border-collapse:collapse;min-width:560px}
+.pn-table th,.pn-table td{text-align:left;padding:10px 12px;border-bottom:2px solid rgba(21,17,14,.12);vertical-align:top}
+.pn-table th{background:var(--ink);color:#fff;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+.pn-badge{display:inline-block;padding:2px 10px;border:2px solid var(--ink);border-radius:999px;font-size:.8rem;font-weight:800;background:var(--cream)}
+.pn-badge--completada,.pn-badge--confirmada{background:var(--turq)}
+.pn-badge--cancelada,.pn-badge--rechazada,.pn-badge--no-show{background:#ffd9df}
+.pn-badge--pendiente,.pn-badge--creada{background:var(--yellow)}
+.pn-bar{display:flex;gap:14px;align-items:center;margin-bottom:12px;font-weight:700}
+.pn-bar input,.pn-field input,.pn-field textarea{font:inherit;padding:10px 12px;border:var(--line);border-radius:12px;background:#fff;width:100%}
+.pn-bar input{max-width:360px}
+.pn-form{display:grid;gap:14px;max-width:480px}
+.pn-field{display:grid;gap:6px}
+.pn-field label{font-weight:800}
+.pn-dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:16px 0}
+.pn-dl dt{font-weight:800}.pn-dl dd{margin:0}
+.panel-body .note{margin-top:12px;color:var(--ink-soft)}
