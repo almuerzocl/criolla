@@ -118,7 +118,7 @@
   const state = { items: [], cats: [], filter: "all", openToday: true, updated: null };
 
   function isSoldOut(it) {
-    return !!it.disabled_by_stock || (it.stock_managed && Number(it.current_stock) <= 0) || (!it.is_available && !it.is_available_for_takeaway);
+    return !!it.disabled_by_stock || (it.stock_managed && Number(it.current_stock) <= 0);
   }
 
   function renderMenu() {
@@ -227,10 +227,11 @@
     const id = encodeURIComponent(C.restaurantId);
     try {
       const [items, cats] = await Promise.all([
-        api(`menu_items?restaurant_id=eq.${id}&select=id,name,description,price,takeaway_price,category,category_id,image_url,is_available,is_available_for_takeaway,stock_managed,current_stock,disabled_by_stock,position&order=position`),
+        api(`menu_items?restaurant_id=eq.${id}&is_available=eq.true&select=id,name,description,price,takeaway_price,category,category_id,image_url,is_available,is_available_for_takeaway,stock_managed,current_stock,disabled_by_stock,position&order=position`),
         api(`menu_categories?restaurant_id=eq.${id}&select=id,name,position,is_visible&order=position`),
       ]);
-      state.items = items; state.cats = cats; state.updated = new Date();
+      // Solo se publican los platos marcados como disponibles (el filtro de la consulta se repite aquí por si cambia la consulta).
+      state.items = items.filter((it) => it.is_available === true); state.cats = cats; state.updated = new Date();
       renderMenu();
     } catch (e) {
       const grid = $("#menu-lista");
