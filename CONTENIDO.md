@@ -18,7 +18,7 @@ Sitio estático (HTML + CSS + JavaScript), **sin build ni dependencias**. Archiv
   (`https://app2.almuerzo.cl`, repo `almuerzocl/v5-pwa`) con el local preseleccionado. Pedir/reservar/login dentro del sitio sería la etapa B/C.
 - **Local que representa:** Cri-Olla - Parque Titanium, `restaurants.id = c8f518ae-2da9-4bb4-a95f-cca4c6b96056` (Costanera Sur 2760, Las Condes; lun–vie 12:00–16:00).
   Lo que se muestra del local (dirección, horario, ofrece retiro/reserva) sale de la base: se cambia en el panel de almuerzo.cl, no aquí.
-- **Menú del día:** `menu_items` con `is_menu_del_dia = true` del local, agrupado por `menu_categories`. «Agotado» = `disabled_by_stock`, o con stock gestionado y `current_stock <= 0`.
+- **Menú del día:** `menu_items` del local con `is_available = true` (un plato no marcado como disponible no se publica), agrupado por `menu_categories`. «Agotado» = `disabled_by_stock`, o con stock gestionado y `current_stock <= 0`.
   Se vuelve a leer cada 60 s mientras la pestaña está visible. Día y hora se calculan en `America/Santiago`.
 - **Origen del cliente:** `profiles.source_restaurant_id` (uuid, FK a `restaurants.id`). `NULL` = ingresó por almuerzo.cl; un id = ingresó por el portal de ese restaurante.
   El enlace «Crear cuenta» manda `?source=<id>`; la PWA lo guarda al crear el perfil (ver `CONTENIDO.md` de `v5-pwa`). No confundir con `profiles.restaurant_id` (restaurante que administra un `RESTAURANT_ADMIN`).
