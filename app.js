@@ -162,6 +162,7 @@
 
   /* Horarios: de 9:00 a 11:00 va primero Desayuno; de 11:00 a 15:00, el almuerzo (en este orden). */
   const BREAKFAST = [/desayuno/i];
+  const ALLOWED_CATS = [/econ[oó]mico/i, /especial/i, /desayuno/i, /bebidas/i]; // únicas categorías que se despliegan
   const HIDDEN_CATS = /\bgeneral\b/i; // categoría interna: no se despliega en la web
   const LUNCH = [/econ[oó]mico/i, /especial/i, /llevar/i];
   function categoryGroups() {
@@ -171,7 +172,7 @@
     state.items.forEach((it) => {
       if (isSoldOut(it) || hiddenIds.has(it.category_id)) return;
       const n = catName(it) || "Otros";
-      if (hiddenNames.has(n) || HIDDEN_CATS.test(n)) return;
+      if (hiddenNames.has(n) || HIDDEN_CATS.test(n) || !ALLOWED_CATS.some((re) => re.test(n))) return;
       if (!byName.has(n)) byName.set(n, []);
       byName.get(n).push(it);
     });
