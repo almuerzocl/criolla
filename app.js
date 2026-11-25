@@ -169,7 +169,7 @@
     const hiddenNames = new Set(state.cats.filter((c) => c.is_visible === false).map((c) => c.name));
     const byName = new Map();
     state.items.forEach((it) => {
-      if (hiddenIds.has(it.category_id)) return;
+      if (isSoldOut(it) || hiddenIds.has(it.category_id)) return;
       const n = catName(it) || "Otros";
       if (hiddenNames.has(n) || HIDDEN_CATS.test(n)) return;
       if (!byName.has(n)) byName.set(n, []);
